@@ -13,15 +13,15 @@ public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture image;
     float x = 0, y = 0;
-    float width = 378;
-    float height = 63;
+    float width = 300;
+    float height = 300;
     float stepX = 8;
     float stepY = 6;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
+        image = new Texture("pika1.png");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class Main extends ApplicationAdapter {
         if(y>SCR_HEIGHT-height || y<0) stepY = -stepY;
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
-        batch.draw(image, x, y);
+        batch.draw(image, x, y, width, height);
         batch.end();
     }
 
