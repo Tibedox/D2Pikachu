@@ -2,16 +2,21 @@ package ru.d2pikachu;
 
 import static ru.d2pikachu.Main.*;
 
+import com.badlogic.gdx.math.MathUtils;
+
 public class Pikachu {
     float x, y;
-    float width = 300;
-    float height = 300;
-    float stepX = 8;
-    float stepY = 6;
+    float width;
+    float height;
+    float stepX;
+    float stepY;
 
-    Pikachu(float x, float y){
+    public Pikachu(float x, float y){
         this.x = x;
         this.y = y;
+        width = height = MathUtils.random(50, 200);
+        stepX = MathUtils.random(-8, 8);
+        stepY = MathUtils.random(-8, 8);
     }
 
     void fly(){
