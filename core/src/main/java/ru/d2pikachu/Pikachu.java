@@ -8,8 +8,8 @@ public class Pikachu {
     float x, y;
     float width;
     float height;
-    float stepX;
-    float stepY;
+    private float stepX;
+    private float stepY;
 
     public Pikachu(float x, float y){
         this.x = x;

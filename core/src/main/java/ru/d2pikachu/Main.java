@@ -11,30 +11,34 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class Main extends ApplicationAdapter {
     public static final float SCR_WIDTH = 1280, SCR_HEIGHT = 720;
     private SpriteBatch batch;
-    private Texture image;
-    Pikachu[] pikachu = new Pikachu[3];
+    private Texture imgPikachu;
+    private Texture imgBackGround;
+    Pikachu[] pikachu = new Pikachu[33];
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        image = new Texture("pika1.png");
-        pikachu[0] = new Pikachu(0, 0);
-        pikachu[1] = new Pikachu(400, 100);
-        pikachu[2] = new Pikachu(100, 400);
+        imgPikachu = new Texture("pika1.png");
+        imgBackGround = new Texture("bg.png");
+        for (int i = 0; i < pikachu.length; i++) {
+            pikachu[i] = new Pikachu(SCR_WIDTH/2, SCR_HEIGHT/3);
+        }
     }
 
     @Override
     public void render() {
         // действия с объектами
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < pikachu.length; i++) {
             pikachu[i].fly();
         }
+        // for (Pikachu p: pikachu) p.fly();
 
         // отрисовка
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
-        for (int i = 0; i < 3; i++) {
-            batch.draw(image, pikachu[i].x, pikachu[i].y, pikachu[i].width, pikachu[i].height);
+        batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        for (int i = 0; i < pikachu.length; i++) {
+            batch.draw(imgPikachu, pikachu[i].x, pikachu[i].y, pikachu[i].width, pikachu[i].height);
         }
         batch.end();
     }
@@ -42,6 +46,7 @@ public class Main extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-        image.dispose();
+        imgPikachu.dispose();
+        imgBackGround.dispose();
     }
 }
