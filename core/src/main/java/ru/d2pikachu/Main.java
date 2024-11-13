@@ -12,16 +12,22 @@ public class Main extends ApplicationAdapter {
     public static final float SCR_WIDTH = 1280, SCR_HEIGHT = 720;
     private SpriteBatch batch;
     private Texture imgPikachu;
+    private Texture imgEevee;
     private Texture imgBackGround;
     Pikachu[] pikachu = new Pikachu[33];
+    Eevee[] eevee = new Eevee[22];
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         imgPikachu = new Texture("pika1.png");
+        imgEevee = new Texture("eevee.png");
         imgBackGround = new Texture("bg.png");
         for (int i = 0; i < pikachu.length; i++) {
             pikachu[i] = new Pikachu(SCR_WIDTH/2, SCR_HEIGHT/3);
+        }
+        for (int i = 0; i < eevee.length; i++) {
+            eevee[i] = new Eevee(500, 500);
         }
     }
 
@@ -30,6 +36,9 @@ public class Main extends ApplicationAdapter {
         // действия с объектами
         for (int i = 0; i < pikachu.length; i++) {
             pikachu[i].fly();
+        }
+        for (int i = 0; i < eevee.length; i++) {
+            eevee[i].fly();
         }
         // for (Pikachu p: pikachu) p.fly();
 
@@ -41,6 +50,10 @@ public class Main extends ApplicationAdapter {
             batch.draw(imgPikachu, pikachu[i].x, pikachu[i].y, pikachu[i].width, pikachu[i].height,
                 0, 0, 300, 300, pikachu[i].flip(), false);
         }
+        for (int i = 0; i < eevee.length; i++) {
+            batch.draw(imgEevee, eevee[i].x, eevee[i].y, eevee[i].width, eevee[i].height,
+                0, 0, 300, 300, eevee[i].flip(), false);
+        }
         batch.end();
     }
 
@@ -48,6 +61,7 @@ public class Main extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         imgPikachu.dispose();
+        imgEevee.dispose();
         imgBackGround.dispose();
     }
 }
