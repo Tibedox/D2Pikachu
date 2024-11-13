@@ -19,10 +19,14 @@ public class Pikachu {
         stepY = MathUtils.random(-8, 8);
     }
 
-    void fly(){
+    public void fly(){
         x += stepX;
         y += stepY;
         if(x>SCR_WIDTH-width || x<0) stepX = -stepX;
         if(y>SCR_HEIGHT-height || y<0) stepY = -stepY;
+    }
+
+    public boolean flip(){
+        return stepX<0;
     }
 }

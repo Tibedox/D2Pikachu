@@ -34,11 +34,12 @@ public class Main extends ApplicationAdapter {
         // for (Pikachu p: pikachu) p.fly();
 
         // отрисовка
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+        // ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
         batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         for (int i = 0; i < pikachu.length; i++) {
-            batch.draw(imgPikachu, pikachu[i].x, pikachu[i].y, pikachu[i].width, pikachu[i].height);
+            batch.draw(imgPikachu, pikachu[i].x, pikachu[i].y, pikachu[i].width, pikachu[i].height,
+                0, 0, 300, 300, pikachu[i].flip(), false);
         }
         batch.end();
     }
