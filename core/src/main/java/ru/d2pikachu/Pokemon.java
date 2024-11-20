@@ -1,14 +1,15 @@
 package ru.d2pikachu;
 
-import static ru.d2pikachu.Main.SCR_HEIGHT;
-import static ru.d2pikachu.Main.SCR_WIDTH;
+import static ru.d2pikachu.Main.*;
 
 import com.badlogic.gdx.math.MathUtils;
 
-abstract public class Pokemon {
-    float x, y;
-    float width;
-    float height;
+public class Pokemon {
+    public float x, y;
+    public float width;
+    public float height;
+    private float reduceWidth;
+    private float reduceHeight;
     float stepX;
     float stepY;
     boolean isTouched;
@@ -27,6 +28,17 @@ abstract public class Pokemon {
         if(!isTouched) {
             if (x > SCR_WIDTH - width || x < 0) stepX = -stepX;
             if (y > SCR_HEIGHT - height || y < 0) stepY = -stepY;
+        } else {
+            width -= reduceWidth;
+            height -= reduceHeight;
+            if(pokeballX-Math.abs(stepX)<x && x<pokeballX+Math.abs(stepX)){
+                stepX = 0;
+                stepY = 0;
+                reduceWidth = 0;
+                reduceHeight = 0;
+                width = 0;
+                height = 0;
+            }
         }
     }
 
@@ -38,5 +50,11 @@ abstract public class Pokemon {
         return x<tx && tx<x+width && y<ty && ty<y+height;
     }
 
-    abstract void disappear();
+    void disappear(){
+        stepX = (pokeballX-x)/20;
+        stepY = (pokeballY-y)/20;
+        reduceWidth = width/20;
+        reduceHeight = height/20;
+        isTouched = true;
+    }
 }

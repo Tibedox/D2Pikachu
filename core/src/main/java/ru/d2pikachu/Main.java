@@ -17,6 +17,7 @@ public class Main extends ApplicationAdapter {
 
     Pikachu[] pikachu = new Pikachu[33];
     Eevee[] eevee = new Eevee[22];
+    static float pokeballX = 625, pokeballY = 240;
 
     @Override
     public void create() {
@@ -40,6 +41,7 @@ public class Main extends ApplicationAdapter {
         if(Gdx.input.justTouched()){
             float tx = Gdx.input.getX();
             float ty = SCR_HEIGHT-Gdx.input.getY();
+            System.out.println(tx+" "+ ty);
 
             for (int i = 0; i < pikachu.length; i++) {
                 if(pikachu[i].hit(tx, ty)){
