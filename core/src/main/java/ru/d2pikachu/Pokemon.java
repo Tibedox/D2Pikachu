@@ -44,6 +44,7 @@ public class Pokemon {
 
     public boolean flip(){
         return stepX<0;
+
     }
 
     boolean hit(float tx, float ty){
