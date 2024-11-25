@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
@@ -14,6 +15,7 @@ public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Vector3 touch;
+    private BitmapFont font;
 
     private Texture imgPikachu;
     private Texture imgEevee;
@@ -24,6 +26,7 @@ public class Main extends ApplicationAdapter {
     Pikachu[] pikachu = new Pikachu[33];
     Eevee[] eevee = new Eevee[22];
     static float pokeballX = 625, pokeballY = 240;
+    private int pokemonCounter;
 
     @Override
     public void create() {
@@ -31,10 +34,11 @@ public class Main extends ApplicationAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCR_WIDTH, SCR_HEIGHT);
         touch = new Vector3();
+        font = new BitmapFont(Gdx.files.internal("groboldof32.fnt"));
 
         imgPikachu = new Texture("pika1.png");
         imgEevee = new Texture("eevee.png");
-        imgBackGround = new Texture("bg.png");
+        imgBackGround = new Texture("bg.jpg");
         sndPikachu = Gdx.audio.newSound(Gdx.files.internal("pikachu.mp3"));
         sndEevee = Gdx.audio.newSound(Gdx.files.internal("eevee.mp3"));
 
@@ -57,12 +61,14 @@ public class Main extends ApplicationAdapter {
                 if(p.hit(touch.x, touch.y)){
                     p.disappear();
                     sndPikachu.play();
+                    pokemonCounter++;
                 }
             }
             for (Eevee e: eevee) {
                 if(e.hit(touch.x, touch.y)){
                     e.disappear();
                     sndEevee.play();
+                    pokemonCounter++;
                 }
             }
         }
@@ -81,6 +87,7 @@ public class Main extends ApplicationAdapter {
         for (Eevee e: eevee) {
             batch.draw(imgEevee, e.x, e.y, e.width, e.height, 0, 0, 300, 300, e.flip(), false);
         }
+        font.draw(batch, "Покемон: "+pokemonCounter, 10, SCR_HEIGHT-10);
         batch.end();
     }
 
@@ -92,5 +99,6 @@ public class Main extends ApplicationAdapter {
         imgBackGround.dispose();
         sndPikachu.dispose();
         sndEevee.dispose();
+        font.dispose();
     }
 }
