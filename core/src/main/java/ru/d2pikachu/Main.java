@@ -2,6 +2,8 @@ package ru.d2pikachu;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,6 +20,7 @@ public class Main extends ApplicationAdapter {
     private Texture imgPikachu;
     private Texture imgEevee;
     private Texture imgBackGround;
+    private Sound sndPikachu;
 
     Pikachu[] pikachu = new Pikachu[33];
     Eevee[] eevee = new Eevee[22];
@@ -33,6 +36,7 @@ public class Main extends ApplicationAdapter {
         imgPikachu = new Texture("pika1.png");
         imgEevee = new Texture("eevee.png");
         imgBackGround = new Texture("bg.png");
+        sndPikachu = Gdx.audio.newSound(Gdx.files.internal("pikachu.mp3"));
 
         for (int i = 0; i < pikachu.length; i++) {
             pikachu[i] = new Pikachu(SCR_WIDTH/2, SCR_HEIGHT/3);
@@ -52,6 +56,7 @@ public class Main extends ApplicationAdapter {
             for (int i = 0; i < pikachu.length; i++) {
                 if(pikachu[i].hit(touch.x, touch.y)){
                     pikachu[i].disappear();
+                    sndPikachu.play();
                 }
             }
             for (int i = 0; i < eevee.length; i++) {
@@ -91,5 +96,6 @@ public class Main extends ApplicationAdapter {
         imgPikachu.dispose();
         imgEevee.dispose();
         imgBackGround.dispose();
+        sndPikachu.dispose();
     }
 }
