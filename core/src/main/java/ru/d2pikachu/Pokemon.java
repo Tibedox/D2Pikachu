@@ -13,6 +13,7 @@ public class Pokemon {
     float stepX;
     float stepY;
     boolean isTouched;
+    private float speedGoHome = 50;
 
     public Pokemon(float x, float y){
         this.x = x;
@@ -52,10 +53,10 @@ public class Pokemon {
     }
 
     void disappear(){
-        stepX = (pokeballX-x)/20;
-        stepY = (pokeballY-y)/20;
-        reduceWidth = width/20;
-        reduceHeight = height/20;
+        stepX = (pokeballX-x)/speedGoHome;
+        stepY = (pokeballY-y)/speedGoHome;
+        reduceWidth = width/speedGoHome;
+        reduceHeight = height/speedGoHome;
         isTouched = true;
     }
 }

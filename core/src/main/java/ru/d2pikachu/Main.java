@@ -2,14 +2,12 @@ package ru.d2pikachu;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     public static final float SCR_WIDTH = 1280, SCR_HEIGHT = 720;
 
@@ -21,6 +19,7 @@ public class Main extends ApplicationAdapter {
     private Texture imgEevee;
     private Texture imgBackGround;
     private Sound sndPikachu;
+    private Sound sndEevee;
 
     Pikachu[] pikachu = new Pikachu[33];
     Eevee[] eevee = new Eevee[22];
@@ -37,12 +36,13 @@ public class Main extends ApplicationAdapter {
         imgEevee = new Texture("eevee.png");
         imgBackGround = new Texture("bg.png");
         sndPikachu = Gdx.audio.newSound(Gdx.files.internal("pikachu.mp3"));
+        sndEevee = Gdx.audio.newSound(Gdx.files.internal("eevee.mp3"));
 
         for (int i = 0; i < pikachu.length; i++) {
-            pikachu[i] = new Pikachu(SCR_WIDTH/2, SCR_HEIGHT/3);
+            pikachu[i] = new Pikachu(pokeballX, pokeballY);
         }
         for (int i = 0; i < eevee.length; i++) {
-            eevee[i] = new Eevee(500, 500);
+            eevee[i] = new Eevee(pokeballX, pokeballY);
         }
     }
 
@@ -53,39 +53,33 @@ public class Main extends ApplicationAdapter {
             touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touch);
 
-            for (int i = 0; i < pikachu.length; i++) {
-                if(pikachu[i].hit(touch.x, touch.y)){
-                    pikachu[i].disappear();
+            for (Pikachu p: pikachu) {
+                if(p.hit(touch.x, touch.y)){
+                    p.disappear();
                     sndPikachu.play();
                 }
             }
-            for (int i = 0; i < eevee.length; i++) {
-                if(eevee[i].hit(touch.x, touch.y)){
-                    eevee[i].disappear();
+            for (Eevee e: eevee) {
+                if(e.hit(touch.x, touch.y)){
+                    e.disappear();
+                    sndEevee.play();
                 }
             }
         }
 
         // события
-        for (int i = 0; i < pikachu.length; i++) {
-            pikachu[i].fly();
-        }
-        for (int i = 0; i < eevee.length; i++) {
-            eevee[i].fly();
-        }
-        // for (Pikachu p: pikachu) p.fly();
+        for (Pikachu p: pikachu) p.fly();
+        for (Eevee e: eevee) e.fly();
 
         // отрисовка
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
-        for (int i = 0; i < pikachu.length; i++) {
-            batch.draw(imgPikachu, pikachu[i].x, pikachu[i].y, pikachu[i].width, pikachu[i].height,
-                0, 0, 300, 300, pikachu[i].flip(), false);
+        for (Pikachu p: pikachu) {
+            batch.draw(imgPikachu, p.x, p.y, p.width, p.height, 0, 0, 300, 300, p.flip(), false);
         }
-        for (int i = 0; i < eevee.length; i++) {
-            batch.draw(imgEevee, eevee[i].x, eevee[i].y, eevee[i].width, eevee[i].height,
-                0, 0, 300, 300, eevee[i].flip(), false);
+        for (Eevee e: eevee) {
+            batch.draw(imgEevee, e.x, e.y, e.width, e.height, 0, 0, 300, 300, e.flip(), false);
         }
         batch.end();
     }
@@ -97,5 +91,6 @@ public class Main extends ApplicationAdapter {
         imgEevee.dispose();
         imgBackGround.dispose();
         sndPikachu.dispose();
+        sndEevee.dispose();
     }
 }
