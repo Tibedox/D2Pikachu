@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class Main extends ApplicationAdapter {
     public static final float SCR_WIDTH = 1280, SCR_HEIGHT = 720;
@@ -88,6 +89,7 @@ public class Main extends ApplicationAdapter {
             batch.draw(imgEevee, e.x, e.y, e.width, e.height, 0, 0, 300, 300, e.flip(), false);
         }
         font.draw(batch, "Покемон: "+pokemonCounter, 10, SCR_HEIGHT-10);
+        font.draw(batch, currentTime(TimeUtils.millis()), SCR_WIDTH-300, SCR_HEIGHT-10);
         batch.end();
     }
 
@@ -100,5 +102,13 @@ public class Main extends ApplicationAdapter {
         sndPikachu.dispose();
         sndEevee.dispose();
         font.dispose();
+    }
+
+    private String currentTime(long time){
+        long msec = time%1000;
+        long sec = time/1000%60;
+        long min = time/1000/60%60;
+        long hour = time/1000/60/60%24;
+        return hour+":"+min/10+min%10+":"+sec/10+sec%10+":"+msec;
     }
 }
