@@ -28,6 +28,7 @@ public class Main extends ApplicationAdapter {
     Eevee[] eevee = new Eevee[22];
     static float pokeballX = 625, pokeballY = 240;
     private int pokemonCounter;
+    long timeStartGame;
 
     @Override
     public void create() {
@@ -49,6 +50,7 @@ public class Main extends ApplicationAdapter {
         for (int i = 0; i < eevee.length; i++) {
             eevee[i] = new Eevee(pokeballX, pokeballY);
         }
+        timeStartGame = TimeUtils.millis();
     }
 
     @Override
@@ -89,7 +91,7 @@ public class Main extends ApplicationAdapter {
             batch.draw(imgEevee, e.x, e.y, e.width, e.height, 0, 0, 300, 300, e.flip(), false);
         }
         font.draw(batch, "Покемон: "+pokemonCounter, 10, SCR_HEIGHT-10);
-        font.draw(batch, currentTime(TimeUtils.millis()), SCR_WIDTH-300, SCR_HEIGHT-10);
+        font.draw(batch, currentTime(TimeUtils.millis()-timeStartGame), SCR_WIDTH-140, SCR_HEIGHT-10);
         batch.end();
     }
 
@@ -109,6 +111,6 @@ public class Main extends ApplicationAdapter {
         long sec = time/1000%60;
         long min = time/1000/60%60;
         long hour = time/1000/60/60%24;
-        return hour+":"+min/10+min%10+":"+sec/10+sec%10+":"+msec;
+        return min/10+min%10+":"+sec/10+sec%10+":"+msec/100;
     }
 }
