@@ -2,6 +2,8 @@ package ru.d2pikachu;
 
 import static ru.d2pikachu.Main.*;
 
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Pokemon {
@@ -12,12 +14,16 @@ public class Pokemon {
     private float reduceHeight;
     float stepX;
     float stepY;
+    Texture img;
+    Sound snd;
     boolean isTouched;
     private float speedGoHome = 50;
 
-    public Pokemon(float x, float y){
+    public Pokemon(float x, float y, Texture img, Sound snd){
         this.x = x;
         this.y = y;
+        this.img = img;
+        this.snd = snd;
         width = height = MathUtils.random(50, 200);
         stepX = MathUtils.random(-3f, 3);
         stepY = MathUtils.random(-3f, 3);
@@ -49,7 +55,7 @@ public class Pokemon {
     }
 
     boolean hit(float tx, float ty){
-        return x<tx && tx<x+width && y<ty && ty<y+height;
+        return x<tx && tx<x+width && y<ty && ty<y+height && !isTouched;
     }
 
     void disappear(){
@@ -58,5 +64,6 @@ public class Pokemon {
         reduceWidth = width/speedGoHome;
         reduceHeight = height/speedGoHome;
         isTouched = true;
+        snd.play();
     }
 }
