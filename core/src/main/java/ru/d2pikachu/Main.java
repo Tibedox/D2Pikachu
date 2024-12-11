@@ -14,6 +14,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class Main extends ApplicationAdapter {
     public static final float SCR_WIDTH = 1280, SCR_HEIGHT = 720;
+    public static final int PLAY = 0;
+    public static final int ENTER_NAME = 1;
+    public static final int GAME_OVER = 2;
 
     private SpriteBatch batch;
     private OrthographicCamera camera;
@@ -21,6 +24,9 @@ public class Main extends ApplicationAdapter {
 
     private BitmapFont font32;
     private BitmapFont font55;
+
+    private InputKeyboard keyboard;
+
     private Texture imgPikachu;
     private Texture imgEevee;
     private Texture imgBackGround;
@@ -30,13 +36,13 @@ public class Main extends ApplicationAdapter {
     PokeButton btnRestart;
     PokeButton btnClearTable;
 
-    Pikachu[] pikachu = new Pikachu[1];
-    Eevee[] eevee = new Eevee[1];
+    Pikachu[] pikachu = new Pikachu[22];
+    Eevee[] eevee = new Eevee[33];
     Player[] player = new Player[6];
     static float pokeballX = 625, pokeballY = 240;
     private int pokemonCounter;
     private long timeStartGame, timeCurrent;
-    private boolean isGameOver;
+    private int gameStatus;
 
     @Override
     public void create() {
@@ -47,6 +53,9 @@ public class Main extends ApplicationAdapter {
 
         font32 = new BitmapFont(Gdx.files.internal("fonts/groboldof32.fnt"));
         font55 = new BitmapFont(Gdx.files.internal("fonts/groboldof55.fnt"));
+
+        keyboard = new InputKeyboard(font32, SCR_WIDTH, SCR_HEIGHT, 12);
+
         imgPikachu = new Texture("pika1.png");
         imgEevee = new Texture("eevee.png");
         imgBackGround = new Texture("bg.jpg");
@@ -82,11 +91,18 @@ public class Main extends ApplicationAdapter {
                     pokemonCounter++;
                 }
             }
-            if(pokemonCounter == pikachu.length+eevee.length && !isGameOver){
-                gameOver();
+            if(pokemonCounter == pikachu.length+eevee.length && gameStatus == PLAY){
+                gameStatus = ENTER_NAME;
+                keyboard.start();
             }
 
-            if(isGameOver){
+            if(gameStatus == ENTER_NAME){
+                if(keyboard.endOfEdit(touch.x, touch.y)) {
+                    gameOver(keyboard.getText());
+                }
+            }
+
+            if(gameStatus == GAME_OVER){
                 if (btnRestart.hit(touch.x, touch.y)){
                     gameRestart();
                 }
@@ -99,7 +115,7 @@ public class Main extends ApplicationAdapter {
         // события
         for (Pikachu p: pikachu) p.fly();
         for (Eevee e: eevee) e.fly();
-        if(!isGameOver) {
+        if(gameStatus == PLAY) {
             timeCurrent = TimeUtils.millis() - timeStartGame;
         }
 
@@ -115,7 +131,8 @@ public class Main extends ApplicationAdapter {
         }
         font32.draw(batch, "Покемон: "+pokemonCounter, 10, SCR_HEIGHT-10);
         font32.draw(batch, showTime(timeCurrent), SCR_WIDTH-140, SCR_HEIGHT-10);
-        if(isGameOver){
+
+        if(gameStatus == GAME_OVER){
             font55.draw(batch, "Game Over", 0, 650, SCR_WIDTH, Align.center, true);
             for (int i = 0; i < player.length-1; i++) {
                 font32.draw(batch, player[i].name, 400, 550-i*70);
@@ -124,6 +141,9 @@ public class Main extends ApplicationAdapter {
             btnRestart.font.draw(batch, btnRestart.text, btnRestart.x, btnRestart.y);
             btnClearTable.font.draw(batch, btnClearTable.text, btnClearTable.x, btnClearTable.y);
         }
+
+        keyboard.draw(batch);
+
         batch.end();
     }
 
@@ -137,6 +157,7 @@ public class Main extends ApplicationAdapter {
         sndEevee.dispose();
         font32.dispose();
         font55.dispose();
+        keyboard.dispose();
     }
 
     private String showTime(long time){
@@ -147,16 +168,16 @@ public class Main extends ApplicationAdapter {
         return min/10+min%10+":"+sec/10+sec%10+":"+msec/100;
     }
 
-    private void gameOver(){
-        isGameOver = true;
-        player[player.length-1].name = "Winner";
+    private void gameOver(String name){
+        gameStatus = GAME_OVER;
+        player[player.length-1].name = name;
         player[player.length-1].time = timeCurrent;
         sortTableOfRecords();
         saveTableOfRecords();
     }
 
     private void gameRestart(){
-        isGameOver = false;
+        gameStatus = PLAY;
         pokemonCounter = 0;
         for (int i = 0; i < pikachu.length; i++) {
             pikachu[i] = new Pikachu(pokeballX, pokeballY, imgPikachu, sndPikachu);
