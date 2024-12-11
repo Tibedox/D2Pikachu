@@ -11,4 +11,9 @@ public class Player {
         this.name = name;
         this.time = time;
     }
+
+    public void set(String name, long time) {
+        this.name = name;
+        this.time = time;
+    }
 }

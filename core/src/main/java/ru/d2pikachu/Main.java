@@ -28,6 +28,7 @@ public class Main extends ApplicationAdapter {
     private Sound sndEevee;
 
     PokeButton btnRestart;
+    PokeButton btnClearTable;
 
     Pikachu[] pikachu = new Pikachu[1];
     Eevee[] eevee = new Eevee[1];
@@ -53,18 +54,13 @@ public class Main extends ApplicationAdapter {
         sndEevee = Gdx.audio.newSound(Gdx.files.internal("eevee.mp3"));
 
         btnRestart = new PokeButton(font32, "RESTART", 550, 150);
+        btnClearTable = new PokeButton(font32, "clear", 580, 100);
 
         for (int i = 0; i < player.length; i++) {
             player[i] = new Player();
         }
         loadTableOfRecords();
-        for (int i = 0; i < pikachu.length; i++) {
-            pikachu[i] = new Pikachu(pokeballX, pokeballY, imgPikachu, sndPikachu);
-        }
-        for (int i = 0; i < eevee.length; i++) {
-            eevee[i] = new Eevee(pokeballX, pokeballY, imgEevee, sndEevee);
-        }
-        timeStartGame = TimeUtils.millis();
+        gameRestart();
     }
 
     @Override
@@ -93,6 +89,9 @@ public class Main extends ApplicationAdapter {
             if(isGameOver){
                 if (btnRestart.hit(touch.x, touch.y)){
                     gameRestart();
+                }
+                if (btnClearTable.hit(touch.x, touch.y)){
+                    clearTableOfRecords();
                 }
             }
         }
@@ -123,6 +122,7 @@ public class Main extends ApplicationAdapter {
                 font32.draw(batch, showTime(player[i].time), 750, 550-i*70);
             }
             btnRestart.font.draw(batch, btnRestart.text, btnRestart.x, btnRestart.y);
+            btnClearTable.font.draw(batch, btnClearTable.text, btnClearTable.x, btnClearTable.y);
         }
         batch.end();
     }
@@ -156,7 +156,15 @@ public class Main extends ApplicationAdapter {
     }
 
     private void gameRestart(){
-
+        isGameOver = false;
+        pokemonCounter = 0;
+        for (int i = 0; i < pikachu.length; i++) {
+            pikachu[i] = new Pikachu(pokeballX, pokeballY, imgPikachu, sndPikachu);
+        }
+        for (int i = 0; i < eevee.length; i++) {
+            eevee[i] = new Eevee(pokeballX, pokeballY, imgEevee, sndEevee);
+        }
+        timeStartGame = TimeUtils.millis();
     }
 
     void sortTableOfRecords(){
@@ -198,5 +206,9 @@ public class Main extends ApplicationAdapter {
             player[i].name = prefs.getString("name"+i, "Noname");
             player[i].time = prefs.getLong("time"+i, 0);
         }
+    }
+
+    void clearTableOfRecords(){
+        for (Player p : player) p.set("Noname", 0);
     }
 }
