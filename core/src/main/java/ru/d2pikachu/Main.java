@@ -27,6 +27,8 @@ public class Main extends ApplicationAdapter {
     private Sound sndPikachu;
     private Sound sndEevee;
 
+    PokeButton btnRestart;
+
     Pikachu[] pikachu = new Pikachu[1];
     Eevee[] eevee = new Eevee[1];
     Player[] player = new Player[6];
@@ -49,6 +51,8 @@ public class Main extends ApplicationAdapter {
         imgBackGround = new Texture("bg.jpg");
         sndPikachu = Gdx.audio.newSound(Gdx.files.internal("pikachu.mp3"));
         sndEevee = Gdx.audio.newSound(Gdx.files.internal("eevee.mp3"));
+
+        btnRestart = new PokeButton(font32, "RESTART", 550, 150);
 
         for (int i = 0; i < player.length; i++) {
             player[i] = new Player();
@@ -85,6 +89,12 @@ public class Main extends ApplicationAdapter {
             if(pokemonCounter == pikachu.length+eevee.length && !isGameOver){
                 gameOver();
             }
+
+            if(isGameOver){
+                if (btnRestart.hit(touch.x, touch.y)){
+                    gameRestart();
+                }
+            }
         }
 
         // события
@@ -112,6 +122,7 @@ public class Main extends ApplicationAdapter {
                 font32.draw(batch, player[i].name, 400, 550-i*70);
                 font32.draw(batch, showTime(player[i].time), 750, 550-i*70);
             }
+            btnRestart.font.draw(batch, btnRestart.text, btnRestart.x, btnRestart.y);
         }
         batch.end();
     }
@@ -142,6 +153,10 @@ public class Main extends ApplicationAdapter {
         player[player.length-1].time = timeCurrent;
         sortTableOfRecords();
         saveTableOfRecords();
+    }
+
+    private void gameRestart(){
+
     }
 
     void sortTableOfRecords(){
