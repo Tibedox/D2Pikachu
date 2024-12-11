@@ -29,7 +29,7 @@ public class Main extends ApplicationAdapter {
 
     Pikachu[] pikachu = new Pikachu[1];
     Eevee[] eevee = new Eevee[1];
-    Player[] player = new Player[5];
+    Player[] player = new Player[6];
     static float pokeballX = 625, pokeballY = 240;
     private int pokemonCounter;
     private long timeStartGame, timeCurrent;
@@ -51,8 +51,9 @@ public class Main extends ApplicationAdapter {
         sndEevee = Gdx.audio.newSound(Gdx.files.internal("eevee.mp3"));
 
         for (int i = 0; i < player.length; i++) {
-            player[i] = new Player("Noname", 0);
+            player[i] = new Player();
         }
+        loadTableOfRecords();
         for (int i = 0; i < pikachu.length; i++) {
             pikachu[i] = new Pikachu(pokeballX, pokeballY, imgPikachu, sndPikachu);
         }
@@ -107,7 +108,7 @@ public class Main extends ApplicationAdapter {
         font32.draw(batch, showTime(timeCurrent), SCR_WIDTH-140, SCR_HEIGHT-10);
         if(isGameOver){
             font55.draw(batch, "Game Over", 0, 650, SCR_WIDTH, Align.center, true);
-            for (int i = 0; i < player.length; i++) {
+            for (int i = 0; i < player.length-1; i++) {
                 font32.draw(batch, player[i].name, 400, 550-i*70);
                 font32.draw(batch, showTime(player[i].time), 750, 550-i*70);
             }
@@ -177,6 +178,10 @@ public class Main extends ApplicationAdapter {
     }
 
     void loadTableOfRecords(){
-
+        Preferences prefs = Gdx.app.getPreferences("PokemonRecords");
+        for (int i = 0; i < player.length; i++) {
+            player[i].name = prefs.getString("name"+i, "Noname");
+            player[i].time = prefs.getLong("time"+i, 0);
+        }
     }
 }
