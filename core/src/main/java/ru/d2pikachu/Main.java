@@ -140,6 +140,7 @@ public class Main extends ApplicationAdapter {
         player[player.length-1].name = "Winner";
         player[player.length-1].time = timeCurrent;
         sortTableOfRecords();
+        saveTableOfRecords();
     }
 
     void sortTableOfRecords(){
@@ -164,5 +165,18 @@ public class Main extends ApplicationAdapter {
                 p.time = 0;
             }
         }
+    }
+
+    void saveTableOfRecords(){
+        Preferences prefs = Gdx.app.getPreferences("PokemonRecords");
+        for (int i = 0; i < player.length; i++) {
+            prefs.putString("name"+i, player[i].name);
+            prefs.putLong("time"+i, player[i].time);
+        }
+        prefs.flush();
+    }
+
+    void loadTableOfRecords(){
+
     }
 }
